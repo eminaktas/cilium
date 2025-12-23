@@ -1210,6 +1210,10 @@ const (
 
 	GRPCRoute = "grpcRoute"
 
+	TCPRoute = "tcpRoute"
+
+	UDPRoute = "udpRoute"
+
 	Secret = "secret"
 
 	Nodes = "nodes"

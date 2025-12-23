@@ -89,6 +89,8 @@ const (
 
 	// CDPPCRDName is the full name of the CDPP CRD.
 	CDPPCRDName = k8sconstv2alpha1.CDPPKindDefinition + "/" + k8sconstv2alpha1.CustomResourceDefinitionVersion
+	// CGL4CCRDName is the full name of the CiliumGatewayL4Config CRD.
+	CGL4CCRDName = k8sconstv2alpha1.CGL4CKindDefinition + "/" + k8sconstv2alpha1.CustomResourceDefinitionVersion
 )
 
 type CRDList struct {
@@ -187,6 +189,10 @@ func CustomResourceDefinitionList() map[string]*CRDList {
 			Name:     CDPPCRDName,
 			FullName: k8sconstv2alpha1.CDPPName,
 		},
+		synced.CRDResourceName(k8sconstv2alpha1.CGL4CName): {
+			Name:     CGL4CCRDName,
+			FullName: k8sconstv2alpha1.CGL4CName,
+		},
 	}
 }
 
@@ -274,6 +280,9 @@ var (
 
 	//go:embed crds/v2alpha1/ciliumdatapathplugins.yaml
 	crdsv2Alpha1CiliumDatapathPlugins []byte
+
+	//go:embed crds/v2alpha1/ciliumgatewayl4configs.yaml
+	crdsv2Alpha1CiliumGatewayL4Configs []byte
 )
 
 // GetPregeneratedCRD returns the pregenerated CRD based on the requested CRD
@@ -331,6 +340,8 @@ func GetPregeneratedCRD(logger *slog.Logger, crdName string) apiextensionsv1.Cus
 		crdBytes = crdsv2Alpha1CiliumGatewayClassConfigs
 	case CDPPCRDName:
 		crdBytes = crdsv2Alpha1CiliumDatapathPlugins
+	case CGL4CCRDName:
+		crdBytes = crdsv2Alpha1CiliumGatewayL4Configs
 	default:
 		logging.Fatal(logger, "Pregenerated CRD does not exist", logfields.CRDName, crdName)
 	}

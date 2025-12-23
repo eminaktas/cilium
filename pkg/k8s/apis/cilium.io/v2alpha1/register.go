@@ -93,6 +93,12 @@ const (
 	CDPPPluralName     = "ciliumdatapathplugins"
 	CDPPKindDefinition = "CiliumDatapathPlugin"
 	CDPPName           = CDPPPluralName + "." + CustomResourceDefinitionGroup
+
+	// CiliumGatewayL4Config (CGL4C)
+	CGL4CPluralName     = "ciliumgatewayl4configs"
+	CGL4CListName       = "ciliumgatewayl4configlists"
+	CGL4CKindDefinition = "CiliumGatewayL4Config"
+	CGL4CName           = CGL4CPluralName + "." + CustomResourceDefinitionGroup
 )
 
 // SchemeGroupVersion is group version used to register these objects
@@ -159,6 +165,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		// new Gateway API types
 		&CiliumGatewayClassConfig{},
 		&CiliumGatewayClassConfigList{},
+		&CiliumGatewayL4Config{},
+		&CiliumGatewayL4ConfigList{},
 
 		&CiliumDatapathPlugin{},
 	)

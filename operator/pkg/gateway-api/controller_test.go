@@ -26,6 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	gatewayv1 "sigs.k8s.io/gateway-api/apis/v1"
+	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 
 	controllerruntime "github.com/cilium/cilium/operator/pkg/controller-runtime"
 	"github.com/cilium/cilium/operator/pkg/gateway-api/helpers"
@@ -56,6 +57,8 @@ func testSchemeNoServiceImport() *runtime.Scheme {
 
 	noMCSGVKs := []schema.GroupVersionKind{
 		gatewayv1.SchemeGroupVersion.WithKind(helpers.TLSRouteKind),
+		gatewayv1alpha2.SchemeGroupVersion.WithKind(helpers.TCPRouteKind),
+		gatewayv1alpha2.SchemeGroupVersion.WithKind(helpers.UDPRouteKind),
 	}
 
 	registerGatewayAPITypesToScheme(scheme, noMCSGVKs)

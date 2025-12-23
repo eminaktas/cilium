@@ -20,6 +20,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	ctrlRuntime "sigs.k8s.io/controller-runtime"
 	gatewayv1 "sigs.k8s.io/gateway-api/apis/v1"
+	gatewayv1alpha2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 	gatewayv1beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 	mcsapiv1beta1 "sigs.k8s.io/mcs-api/pkg/apis/v1beta1"
 
@@ -73,6 +74,8 @@ var requiredGVKs = []schema.GroupVersionKind{
 
 var optionalGVKs = []schema.GroupVersionKind{
 	gatewayv1.SchemeGroupVersion.WithKind(helpers.TLSRouteKind),
+	gatewayv1alpha2.SchemeGroupVersion.WithKind(helpers.TCPRouteKind),
+	gatewayv1alpha2.SchemeGroupVersion.WithKind(helpers.UDPRouteKind),
 	mcsapiv1beta1.SchemeGroupVersion.WithKind(helpers.ServiceImportKind),
 }
 
@@ -257,8 +260,9 @@ func initGatewayAPIController(params gatewayAPIParams) error {
 		},
 	}
 	cecTranslator := translation.NewCECTranslator(cfg)
+	gl4cTranslator := translation.NewGL4CTranslator()
 
-	gatewayAPITranslator := gatewayApiTranslation.NewTranslator(cecTranslator, cfg)
+	gatewayAPITranslator := gatewayApiTranslation.NewTranslator(cecTranslator, gl4cTranslator, cfg)
 
 	if err := registerReconcilers(
 		params.CtrlRuntimeManager,
@@ -428,6 +432,14 @@ func registerReconcilers(mgr ctrlRuntime.Manager, translator translation.Transla
 			// TLSRoute is reconciled by the Gateway API reconciler, but log that the
 			// support has been successfully enabled.
 			logger.Info("TLSRoute CRD is installed, TLSRoute support is enabled")
+		case helpers.TCPRouteKind:
+			// TCPRoute is reconciled by the Gateway API reconciler, but log that the
+			// support has been successfully enabled.
+			logger.Info("TCPRoute CRD is installed, TCPRoute support is enabled")
+		case helpers.UDPRouteKind:
+			// UDPRoute is reconciled by the Gateway API reconciler, but log that the
+			// support has been successfully enabled.
+			logger.Info("UDPRoute CRD is installed, UDPRoute support is enabled")
 		case helpers.ServiceImportKind:
 			// we don't need a reconciler, but we do need to tell folks that the
 			// support is working.
